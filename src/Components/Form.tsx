@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
 import swal from 'sweetalert'
+
+import 'react-datepicker/dist/react-datepicker.css'
 interface Props{
     todo:string;
     setTodo:React.Dispatch<React.SetStateAction<string>>;
@@ -8,7 +10,7 @@ interface Props{
 const Form:React.FC<Props> = ({todo, setTodo,handleAdd}) => {
    
   const formRef=useRef<HTMLInputElement>(null)
-
+ 
 
 
   const handleTaskAddedalert =()=>{
@@ -19,6 +21,7 @@ const Form:React.FC<Props> = ({todo, setTodo,handleAdd}) => {
      
     });   
   }
+ 
 
   return (
     <>
@@ -31,6 +34,7 @@ const Form:React.FC<Props> = ({todo, setTodo,handleAdd}) => {
          value={todo}
          onChange={(e)=>setTodo(e.target.value)}
          ></input>
+        
         <button className='inputSubmit' type='submit' onClick={handleTaskAddedalert}>Enter</button>
       </form>
     </>

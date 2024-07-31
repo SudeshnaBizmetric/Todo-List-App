@@ -8,10 +8,11 @@ function App() {
   const [todo, setTodo] = React.useState<string>("")
   const [todos, setTodos] = React.useState<Todo[]>([])
   const [completedTodos ,setCompletedTodos] =React.useState<Todo[]>([])
+  const [priorityList ,setpriorityList]=React.useState<Todo[]>([])
   const handleAdd =(e: React.FormEvent) =>{
        e.preventDefault();
        if(todo){
-        setTodos([...todos,{id:Date.now(),todo:todo,isDone:false}])
+        setTodos([...todos,{id:Date.now(),todo:todo,isDone:false,isPriority:false}])
         setTodo("");
        }
   }
@@ -24,7 +25,7 @@ function App() {
      <div className="Main">
       <span className="Heading">Todo List</span>
       <Form  todo={todo} setTodo={setTodo} handleAdd={handleAdd}/>
-      <TodoList todos={todos} setTodos={setTodos} setCompletedTodos={setCompletedTodos} completedTodos={completedTodos}/>
+      <TodoList todos={todos} setTodos={setTodos} setCompletedTodos={setCompletedTodos} completedTodos={completedTodos} priorityList={priorityList} setpriorityList={setpriorityList}/>
     
      </div>
     </>

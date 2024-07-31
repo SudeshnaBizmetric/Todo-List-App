@@ -5,6 +5,7 @@ import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
 import swal from 'sweetalert';
+import DatePicker from 'react-datepicker';
 
 type Props = {
   todo: Todo;
@@ -12,6 +13,8 @@ type Props = {
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
   completedTodos: Todo[];
   setCompletedTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  setpriorityList: React.Dispatch<React.SetStateAction<Todo[]>>;
+  priorityList: Todo[];
 };
 
 const SingleTodo: React.FC<Props> = ({
@@ -19,17 +22,17 @@ const SingleTodo: React.FC<Props> = ({
   todos,
   setTodos,
   completedTodos,
-  setCompletedTodos
+  setCompletedTodos,
+  priorityList,
+  setpriorityList
 }) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [editTodoText, setEditTodoText] = useState<string>(todo.todo);
   const [buttonsDisabled, setButtonsDisabled] = useState<boolean>(false);
 
-  // Check if todo item is in completed list
   const isInCompletedList = completedTodos.some(t => t.id === todo.id);
-
-  // Disable buttons if task is completed
   const disableButtons = buttonsDisabled || isInCompletedList;
+  const isinPriority=priorityList.some(t=>t.id===todo.id)
 
   const handleDoneAlert = () => {
     swal({
@@ -38,15 +41,15 @@ const SingleTodo: React.FC<Props> = ({
       icon: "success"
     });
   };
-const handledeletealert=()=>{
-   swal({
+
+  const handleDeleteAlert = () => {
+    swal({
       title: "Deleted",
-    
       icon: "warning",
       dangerMode: true,
-    })
-    
-}
+    });
+  };
+
   const handleButtonDisable = () => {
     setButtonsDisabled(true);
   };
@@ -59,25 +62,44 @@ const handledeletealert=()=>{
     }
   };
 
+  const handleAddToPriorityList = () => {
+    if (!todo.isPriority) {
+      if (!isinPriority) {
+        setpriorityList([...priorityList, todo]);
+      }
+    } else {
+      setpriorityList(priorityList.filter((t) => t.id !== todo.id));
+    }
+  };
+  
+
   const handleDone = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, isDone: true } : todo
+    );
+    setTodos(updatedTodos);
     handleAddToCompletedList();
     handleButtonDisable();
     handleDoneAlert();
+    
   };
 
   const handleDelete = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-    handledeletealert()
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
+    handleDeleteAlert();
   };
 
   const handleEditText = (e: React.FormEvent, id: number) => {
     e.preventDefault();
-    setTodos(todos.map((todo) => (
+    const updatedTodos = todos.map((todo) =>
       todo.id === id ? { ...todo, todo: editTodoText } : todo
-    )));
+    );
+    setTodos(updatedTodos);
     setEdit(false);
   };
+
+  const [selectedDate, setDate] = useState<Date | null>(null); 
 
   return (
     <form className='SingleTodo' onSubmit={(e) => handleEditText(e, todo.id)}>
@@ -89,41 +111,52 @@ const handledeletealert=()=>{
       ) : (
         <span className='todo-text'>{todo.todo}</span>
       )}
-
-      <div className='icons'>
-        <span
-          className={`icon ${disableButtons ? 'disabled' : ''}`}
-          onClick={() => {
-            if (!edit && !isInCompletedList) {
-              setEdit(!edit);
-            }
-          }}
-        >
-          <MdEdit />
-        </span>
-        <span
-          className={`icon ${disableButtons ? 'disabled' : ''}`}
-          onClick={() => {
-            if (!disableButtons) {
-              handleDelete(todo.id);
-            }
-          }}
-        >
-          <MdDelete />
-        </span>
-        {!isInCompletedList && (
-          <span
-            className={`icon ${disableButtons ? 'disabled' : ''}`}
-            onClick={() => {
-              if (!disableButtons) {
-                handleDone(todo.id);
-              }
-            }}
-          >
-            <TiTick />
-          </span>
-        )}
-      </div>
+         {! disableButtons &&(
+   <div className='dropdown'>
+   <button className='dropdown-btn'>Actions</button>
+   <div className='dropdown-content'>
+     <a href='#'>
+       <DatePicker placeholderText="Deadline" className='inputDate' selected={selectedDate} onChange={(date: Date | null) => setDate(date)} />
+     </a>
+     {!isinPriority &&(
+       <a href="#" onClick={() => {
+         
+           handleAddToPriorityList();
+         
+       }}>
+       {isinPriority ? 'Remove Priority' : 'Add to Priority'}
+       
+     </a>
+     )}
+     
+     <a href="#" onClick={() => {
+       if (!edit && !isInCompletedList) {
+         setEdit(!edit);
+       }
+     }}>
+       <MdEdit style={{ marginRight: '10px' }} /> Edit
+     </a>
+     <a href="#" onClick={() => {
+       if (!disableButtons) {
+         handleDelete(todo.id);
+       }
+     }}>
+       <MdDelete style={{ marginRight: '10px' }} /> Delete
+     </a>
+     {!isInCompletedList && (
+       <a href="#" onClick={() => {
+         if (!disableButtons) {
+           handleDone(todo.id);
+         }
+       }}>
+         <TiTick style={{ marginRight: '10px' }} /> Done
+       </a>
+     )}
+   </div>
+ </div>
+         ) 
+         }
+   
     </form>
   );
 };
