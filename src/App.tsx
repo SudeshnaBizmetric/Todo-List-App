@@ -26,7 +26,7 @@ function App() {
       <span className="Heading">Todo List</span>
       <Form  todo={todo} setTodo={setTodo} handleAdd={handleAdd}/>
       <TodoList todos={todos} setTodos={setTodos} setCompletedTodos={setCompletedTodos} completedTodos={completedTodos} priorityList={priorityList} setpriorityList={setpriorityList}/>
-    
+  
      </div>
     </>
   )

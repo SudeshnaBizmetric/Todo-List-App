@@ -20,7 +20,7 @@ const TodoList: React.FC<Props> = ({
   priorityList,
   setpriorityList
 }) => {
-  // Separate todos into active, priority, and completed
+
   const activeTodos = todos.filter(todo => !todo.isDone && !todo.isPriority);
   const priorityTodos = priorityList
   const completedTodosList = completedTodos;

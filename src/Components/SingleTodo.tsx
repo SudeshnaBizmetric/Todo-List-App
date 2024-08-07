@@ -33,7 +33,7 @@ const SingleTodo: React.FC<Props> = ({
   const isInCompletedList = completedTodos.some(t => t.id === todo.id);
   const disableButtons = buttonsDisabled || isInCompletedList;
   const isinPriority=priorityList.some(t=>t.id===todo.id)
-
+  
   const handleDoneAlert = () => {
     swal({
       title: "Good job!",
@@ -56,22 +56,29 @@ const SingleTodo: React.FC<Props> = ({
 
   const handleAddToCompletedList = () => {
     if (!todo.isDone) {
-      setCompletedTodos([...completedTodos, todo]);
+      setCompletedTodos([...completedTodos, todo]); // ... = spread operators
     } else {
       setCompletedTodos(completedTodos.filter((t) => t.id !== todo.id));
     }
   };
 
-  const handleAddToPriorityList = () => {
+  const handleAddToPriorityList = (id: number) => {
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, isDone: true } : todo
+    );
+    setTodos(updatedTodos);
     if (!todo.isPriority) {
       if (!isinPriority) {
         setpriorityList([...priorityList, todo]);
       }
-    } else {
-      setpriorityList(priorityList.filter((t) => t.id !== todo.id));
-    }
+    } 
   };
   
+  const handleremovefromprioritylist=()=>{
+    if(!todo.isDone){
+      setpriorityList(priorityList.filter((t) => t.id !== todo.id));
+    }
+  }
 
   const handleDone = (id: number) => {
     const updatedTodos = todos.map((todo) =>
@@ -81,7 +88,7 @@ const SingleTodo: React.FC<Props> = ({
     handleAddToCompletedList();
     handleButtonDisable();
     handleDoneAlert();
-    
+    handleremovefromprioritylist();
   };
 
   const handleDelete = (id: number) => {
@@ -121,16 +128,16 @@ const SingleTodo: React.FC<Props> = ({
      {!isinPriority &&(
        <a href="#" onClick={() => {
          
-           handleAddToPriorityList();
+           handleAddToPriorityList(todo.id);
          
        }}>
-       {isinPriority ? 'Remove Priority' : 'Add to Priority'}
+       {isinPriority ? ('Remove Priority') : ('Add to Priority')}
        
      </a>
      )}
      
      <a href="#" onClick={() => {
-       if (!edit && !isInCompletedList) {
+       if (!edit) {
          setEdit(!edit);
        }
      }}>
@@ -143,10 +150,11 @@ const SingleTodo: React.FC<Props> = ({
      }}>
        <MdDelete style={{ marginRight: '10px' }} /> Delete
      </a>
-     {!isInCompletedList && (
+     {!isInCompletedList  && (
        <a href="#" onClick={() => {
          if (!disableButtons) {
            handleDone(todo.id);
+           handleremovefromprioritylist();
          }
        }}>
          <TiTick style={{ marginRight: '10px' }} /> Done

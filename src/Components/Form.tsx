@@ -15,8 +15,8 @@ const Form:React.FC<Props> = ({todo, setTodo,handleAdd}) => {
 
   const handleTaskAddedalert =()=>{
     swal({
-      title: "Good job!",
-      text: "You have added new task!",
+      title: "New Task  added, GREAT!",
+     
       icon: "success",
      
     });   
@@ -27,7 +27,7 @@ const Form:React.FC<Props> = ({todo, setTodo,handleAdd}) => {
     <>
       <form className='input' onSubmit={handleAdd} >
         <input
-        ref={formRef}
+         ref={formRef}
          className='inputbox'
          type='input' 
          placeholder='Enter a task here'
