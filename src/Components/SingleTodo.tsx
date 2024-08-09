@@ -27,13 +27,12 @@ const SingleTodo: React.FC<Props> = ({
   setpriorityList
 }) => {
   const [edit, setEdit] = useState<boolean>(false);
-  const [editTodoText, setEditTodoText] = useState<string>(todo.todo);
+  const [editTodoText, setEditTodoText] = useState<string>(todo.todo_name);
   const [buttonsDisabled, setButtonsDisabled] = useState<boolean>(false);
 
   const isInCompletedList = completedTodos.some(t => t.id === todo.id);
   const disableButtons = buttonsDisabled || isInCompletedList;
   const isinPriority=priorityList.some(t=>t.id===todo.id)
-  
   const handleDoneAlert = () => {
     swal({
       title: "Good job!",
@@ -116,7 +115,7 @@ const SingleTodo: React.FC<Props> = ({
           onChange={(e) => setEditTodoText(e.target.value)}
         />
       ) : (
-        <span className='todo-text'>{todo.todo}</span>
+        <span className='todo-text'>{todo.todo_name}</span>
       )}
          {! disableButtons &&(
    <div className='dropdown'>

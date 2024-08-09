@@ -1,13 +1,17 @@
 export class Todo{
-    id:number;
-    todo:string;
-    isDone:boolean;
+    _id?: string;
+    todo_name: string
+    isDone:boolean
     isPriority:boolean
+    deadline:string
+    id: any;
 
-    constructor(id:number,todo:string,isDone:boolean , isPriority:boolean ){
-        this.id=id;
-        this.todo=todo;
+    constructor(todo_name:string,isDone:boolean , isPriority:boolean , deadline:string ,id:any){
+        
+        this.todo_name=todo_name;
         this.isDone=isDone;
         this.isPriority=isPriority;
+        this.deadline=deadline
+        this.id=id
     }
 }

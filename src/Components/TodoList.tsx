@@ -20,9 +20,13 @@ const TodoList: React.FC<Props> = ({
   priorityList,
   setpriorityList
 }) => {
+  if (!Array.isArray(todos)) {
+    console.error('Expected todos to be an array but received:', todos);
+    return <div>Error: Invalid data format</div>;
+  }
 
   const activeTodos = todos.filter(todo => !todo.isDone && !todo.isPriority);
-  const priorityTodos = priorityList
+  const priorityTodos = priorityList;
   const completedTodosList = completedTodos;
 
   return (

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import swal from 'sweetalert'
-
 import 'react-datepicker/dist/react-datepicker.css'
+import axios from 'axios';
 interface Props{
     todo:string;
     setTodo:React.Dispatch<React.SetStateAction<string>>;
@@ -10,7 +10,7 @@ interface Props{
 const Form:React.FC<Props> = ({todo, setTodo,handleAdd}) => {
    
   const formRef=useRef<HTMLInputElement>(null)
- 
+  // const API_URL = " http://127.0.0.1:8000/"
 
 
   const handleTaskAddedalert =()=>{
@@ -21,7 +21,10 @@ const Form:React.FC<Props> = ({todo, setTodo,handleAdd}) => {
      
     });   
   }
- 
+  
+  const handleaddtodo=()=>{
+    axios
+  }
 
   return (
     <>
